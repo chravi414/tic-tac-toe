@@ -1,0 +1,88 @@
+<div class="player-info">
+  <div class="row w-75 m-auto align-items-center">
+    <div
+      class="col-md-4 player one"
+      [class.active]="
+        (isTeam && currentTeamIndex === 0) ||
+        (!isTeam && currentPlayerIndex === 0)
+      "
+    >
+      <div *ngIf="isTeam">
+        <h5>Team 1</h5>
+        <div class="team-info">
+          <p class="team-member">
+            {{ teamMembers[0][0] }}
+            <span
+              *ngIf="currentTeamIndex === 0 && currentTeamOnePlayerIndex === 0"
+              class="checkmark"
+            >
+              <i class="fas fa-check-circle"></i>
+            </span>
+          </p>
+          <p class="team-member">
+            {{ teamMembers[0][1]
+            }}<span
+              *ngIf="currentTeamIndex === 0 && currentTeamOnePlayerIndex === 1"
+              class="checkmark"
+            >
+              <i class="fas fa-check-circle"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+      <div *ngIf="!isTeam">{{ players[0] }}</div>
+    </div>
+    <div class="col m-auto icons">
+      <i class="fas fa-home fa-2x mr-3" (click)="goToHome()"></i>
+      <i class="fas fa-redo fa-2x" (click)="playAgain()"></i>
+    </div>
+    <div
+      class="col-md-4 player two"
+      [class.active]="
+        (isTeam && currentTeamIndex === 1) ||
+        (!isTeam && currentPlayerIndex === 1)
+      "
+    >
+      <div *ngIf="isTeam">
+        <h5>Team 2</h5>
+        <div class="team-info">
+          <p class="team-member">
+            {{ teamMembers[1][0] }}
+            <span
+              *ngIf="currentTeamIndex === 1 && currentTeamTwoPlayerIndex === 0"
+              class="checkmark"
+            >
+              <i class="fas fa-check-circle"></i>
+            </span>
+          </p>
+          <p class="team-member">
+            {{ teamMembers[1][1] }}
+            <span
+              *ngIf="currentTeamIndex === 1 && currentTeamTwoPlayerIndex === 1"
+              class="checkmark"
+            >
+              <i class="fas fa-check-circle"></i>
+            </span>
+          </p>
+        </div>
+      </div>
+      <div *ngIf="!isTeam">{{ players[1] }}</div>
+    </div>
+  </div>
+</div>
+<div class="row w-75 m-auto" *ngIf="winner || isDraw">
+  <div class="col">
+    <p class="winner-msg">
+      {{ winner ? "Winner is " + winner : "It's a tie...!!" }}
+    </p>
+  </div>
+</div>
+<div class="row w-75 m-auto" *ngFor="let row of rows; let rowIndex = index">
+  <div
+    class="col square"
+    *ngFor="let col of columns; let colIndex = index"
+    (click)="makeMove(rowIndex, colIndex)"
+  >
+    {{ squares[rowIndex][colIndex] }}
+  </div>
+</div>

@@ -1,0 +1,118 @@
+.square {
+  height: 75px;
+  width: 75px;
+  border: 2px solid #316cdb;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.winner-msg {
+  font-weight: 700;
+  font-size: 20px;
+  margin-top: 0;
+  text-align: center;
+  color: #f5d335;
+}
+
+.team-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  p.team-member {
+    font-size: 12px;
+    font-weight: 300;
+    .checkmark i {
+      color: #f5d335;
+      margin-left: 2px;
+    }
+  }
+}
+
+.player-info {
+  margin-bottom: 2rem;
+  .player {
+    font-size: 20px;
+    padding: 1rem;
+    text-transform: capitalize;
+    font-weight: 700;
+    .active {
+      border: 0;
+    }
+  }
+  .icons {
+    text-align: center;
+    .fas {
+      cursor: pointer;
+    }
+  }
+}
+
+@keyframes border {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  25% {
+    width: 100%;
+    height: 0;
+  }
+  50% {
+    width: 100%;
+    height: 100%;
+  }
+  100% {
+    width: 100%;
+    height: 100%;
+  }
+}
+@keyframes borderColor {
+  0% {
+    border-bottom-color: #60daaa;
+    border-left-color: #60daaa;
+  }
+  50% {
+    border-bottom-color: #60daaa;
+    border-left-color: #60daaa;
+  }
+  51% {
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
+  100% {
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
+}
+
+.player.active::before,
+.player.active::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  border: 2px solid transparent;
+  width: 0;
+  height: 0;
+}
+
+.player.active::before {
+  top: 0;
+  left: 0;
+  border-top-color: #60daaa;
+  border-right-color: #60daaa;
+  animation: border 2s infinite;
+}
+
+.player.two.active::before {
+  border-top-color: #d81616;
+  border-right-color: #d81616;
+}
+
+.player.active::after {
+  bottom: 0;
+  right: 0;
+  animation: border 2s 1s infinite, borderColor 2s 1s infinite;
+}

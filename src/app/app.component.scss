@@ -1,0 +1,54 @@
+.container,
+.header {
+  height: 100%;
+}
+
+.header > div {
+  height: 85vh;
+}
+
+.header-content {
+  border-right: 2px solid #f9fbf6;
+  padding-top: 75px;
+}
+
+.title {
+  font-size: 30px;
+}
+
+.subtext {
+  padding: 0.5rem;
+}
+
+.subtext h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.example-radio-group {
+  display: flex;
+  flex-direction: row;
+  margin: 15px 0;
+  .example-radio-button {
+    margin: 5px;
+  }
+}
+
+mat-form-field {
+  margin-right: 10px;
+}
+.btn-info {
+  background-color: #f5d335;
+  color: #1c1400;
+  margin-top: 2rem;
+  &.active {
+    background-color: #f5d335;
+    border: none;
+  }
+}
+
+.example-form .example-full-width {
+  background: #fff;
+  color: #1e2235;
+}

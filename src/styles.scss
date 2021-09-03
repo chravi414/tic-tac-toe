@@ -1,1 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+  background-color: #212845;
+  color: #f9fbf6;
+  height: 100vh;
+}
+
+.mat-radio-outer-circle {
+  border-color: #f9fbf6 !important;
+}
+
+.mat-radio-inner-circle {
+  background-color: #f9fbf6 !important;
+}
