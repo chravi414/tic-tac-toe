@@ -19,3 +19,29 @@ body {
 .mat-radio-inner-circle {
   background-color: #f9fbf6 !important;
 }
+
+.mat-form-field-flex {
+  background-color: #f9fbf6 !important;
+}
+
+.mat-form-field-underline::before {
+  background-color: #111;
+}
+
+#player-form {
+  .mat-form-field-underline::before {
+    background-color: #111;
+  }
+  .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #fff;
+  }
+  .mat-input-element {
+    color: #111;
+  }
+  .mat-form-field-ripple {
+    background-color: #fff;
+  }
+  .placeholder {
+    display: none;
+  }
+}

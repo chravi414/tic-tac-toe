@@ -1,6 +1,9 @@
 <div class="container">
-  <div class="row justify-content-center align-items-center header">
-    <div class="col-md-5 header-content">
+  <div
+    class="row justify-content-center align-items-center header"
+    *ngIf="!isGameStarted"
+  >
+    <div class="col-md-6 header-content">
       <h2 class="title">Tic Tac Toe</h2>
       <div class="subtext">
         <h4>3 X 3 Game</h4>
@@ -17,75 +20,135 @@
         </p>
       </div>
     </div>
-    <div class="col-md-5 player-content">
-      <div class="row justify-content-center info" *ngIf="showPlayerDetails">
-        <div class="col-6 offset-md-1">
-          <mat-radio-group
-            aria-labelledby="example-radio-group-label"
-            class="example-radio-group"
-            [(ngModel)]="gameType"
-          >
-            <mat-radio-button
-              class="example-radio-button"
-              *ngFor="let game of gameTypes"
-              [value]="game.id"
+
+    <div class="col-md-6 player-content">
+      <div class="row justify-content-center info" *ngIf="!isGameStarted">
+        <div class="col-12 offset-md-1">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Select Play Type</mat-label>
+                <mat-select
+                  [(value)]="playType"
+                  (selectionChange)="onPlayTypeSelect(playType)"
+                >
+                  <mat-option
+                    *ngFor="let playType of playTypes"
+                    [value]="playType"
+                  >
+                    {{ playType.value }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6" *ngIf="playType && playType.id === 1">
+              <mat-radio-group
+                aria-labelledby="example-radio-group-label"
+                class="example-radio-group"
+                [(ngModel)]="gameType"
+              >
+                <mat-radio-button
+                  (click)="onGameTypeSelect(game)"
+                  class="example-radio-button"
+                  *ngFor="let game of gameTypes"
+                  [value]="game.id"
+                >
+                  {{ game.label }}
+                </mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="col-md-6" *ngIf="playType && playType.id === 2">
+              <div class="row align-items-center">
+                <div class="col-md-6">Game Type :</div>
+                <div class="col-md-6">5 X 5</div>
+              </div>
+            </div>
+          </div>
+          <div class="row align-items-center">
+            <div
+              class="col-md-6"
+              *ngIf="!playType || (playType && playType.id === 1)"
             >
-              {{ game.label }}
-            </mat-radio-button>
-          </mat-radio-group>
-        </div>
-        <div class="col-12">
-          <div class="row" *ngIf="gameType === 1">
-            <div class="col" *ngIf="gameType === 1">
+              <mat-form-field appearance="fill">
+                <mat-label>Select No of Players</mat-label>
+                <mat-select
+                  [(value)]="noOfPlayers"
+                  (selectionChange)="onNoOfPlayersSelect()"
+                >
+                  <mat-option
+                    *ngFor="let number of noOfPlayersArray"
+                    [value]="number"
+                    >{{ number }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6" *ngIf="playType && playType.id === 2">
+              <div class="row align-items-center">
+                <div class="col-md-8">No of Players:</div>
+                <div class="col-md-2">{{ noOfPlayers }}</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field appearance="fill">
+                <mat-label>Select Win Factor</mat-label>
+                <mat-select [(value)]="winFactor">
+                  <mat-option
+                    *ngFor="let number of winFactorArray"
+                    [value]="number"
+                    >{{ number }}</mat-option
+                  >
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div
+            class="row align-items-center"
+            *ngIf="showFreePlayForm && noOfPlayers && winFactor"
+          >
+            <div class="col-12">
               <h4>Player Details</h4>
-              <form class="example-form" [formGroup]="playerForm">
-                <div class="row">
-                  <div class="col-md-5">
-                    <mat-form-field
-                      class="example-full-width"
-                      appearance="fill"
-                    >
-                      <mat-label>Player 1</mat-label>
-                      <input
-                        type="text"
-                        matInput
-                        formControlName="player1"
-                        placeholder="Ex. Player One"
-                      />
-                      <mat-error
-                        *ngIf="playerForm.controls.player1.errors?.required"
+              <form
+                class="example-form"
+                id="player-form"
+                [formGroup]="playerForm"
+              >
+                <div class="row" formArrayName="players">
+                  <div
+                    class="col-md-6"
+                    *ngFor="let player of playersArray.controls; let i = index"
+                  >
+                    <div [formGroupName]="i">
+                      <mat-form-field
+                        class="example-full-width"
+                        appearance="fill"
                       >
-                        Please enter a valid player name
-                      </mat-error>
-                    </mat-form-field>
-                  </div>
-                  <div class="col-md-5 offset-md-1">
-                    <mat-form-field
-                      class="example-full-width"
-                      appearance="fill"
-                    >
-                      <mat-label>Player 2</mat-label>
-                      <input
-                        type="text"
-                        matInput
-                        formControlName="player2"
-                        placeholder="Ex. Player Two"
-                      />
-                      <mat-error
-                        *ngIf="playerForm.controls.player2.errors?.required"
-                      >
-                        Please enter a valid player name
-                      </mat-error>
-                    </mat-form-field>
+                        <mat-label>Player {{ i + 1 }}</mat-label>
+                        <input
+                          type="text"
+                          matInput
+                          formControlName="name"
+                          placeholder="Ex. Player One"
+                        />
+                      </mat-form-field>
+                    </div>
                   </div>
                 </div>
               </form>
             </div>
           </div>
-          <div class="row" *ngIf="gameType === 2">
+
+          <div
+            class="row align-items-center"
+            *ngIf="showTeamForm && noOfPlayers && winFactor"
+          >
             <div class="col">
               <h4>Team Details</h4>
-              <form class="example-form" [formGroup]="teamForm">
+              <form
+                class="example-form"
+                id="player-form"
+                [formGroup]="teamForm"
+              >
                 <h3>Team 1</h3>
                 <div class="row" formGroupName="team1">
                   <div class="col-md-5">
@@ -153,6 +216,7 @@
                     <mat-form-field
                       class="example-full-width"
                       appearance="fill"
+                      color="accent"
                     >
                       <mat-label>Player 2</mat-label>
                       <input
@@ -173,32 +237,30 @@
             </div>
           </div>
         </div>
+
         <div class="col-6 offset-md-2">
           <button
             class="btn btn-info"
-            (click)="playGame()"
-            [disabled]="gameType === 1 ? !playerForm.valid : !teamForm.valid"
+            (click)="playGameAdvanced()"
+            [disabled]="
+              playType && playType.id === 1
+                ? !playerForm.valid
+                : !teamForm.valid
+            "
           >
             Play Game
           </button>
         </div>
       </div>
-      <div *ngIf="!showPlayerDetails">
-        <app-board
-          [gameSelected]="gameSelected"
-          [isTeam]="isTeam"
-          [players]="players"
-          [teamMembers]="
-            isTeam
-              ? [
-                  [players[0], players[1]],
-                  [players[2], players[3]]
-                ]
-              : [[], []]
-          "
-          (homeEventTrigger)="restartAll($event)"
-        ></app-board>
-      </div>
     </div>
   </div>
+  <app-board
+    *ngIf="isGameStarted"
+    [gameSelected]="gameSelected"
+    [isTeam]="isTeam"
+    [players]="players"
+    [teams]="teams"
+    [winFactor]="winFactor"
+    (homeEventTrigger)="restartAll($event)"
+  ></app-board>
 </div>

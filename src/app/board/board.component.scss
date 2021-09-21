@@ -32,6 +32,11 @@
   }
 }
 
+.checkmark i {
+  color: #f5d335;
+  margin-left: 2px;
+}
+
 .player-info {
   margin-bottom: 2rem;
   .player {
@@ -115,4 +120,35 @@
   bottom: 0;
   right: 0;
   animation: border 2s 1s infinite, borderColor 2s 1s infinite;
+}
+
+.detail-header {
+  background: #fff;
+  color: #111;
+  padding: 1rem;
+  box-shadow: 0 3px 3px #ccc;
+  border-radius: 10px;
+}
+
+.detail-row {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 1rem;
+  &.active {
+    border: 1px solid #60daaa;
+  }
+  input[type="text"] {
+    width: 75px;
+  }
+}
+
+.team {
+  input[type="text"] {
+    width: 120px;
+  }
+}
+
+.error {
+  color: #d81616;
+  font-size: 12px;
 }

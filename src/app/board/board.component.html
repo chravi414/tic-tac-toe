@@ -1,4 +1,4 @@
-<div class="player-info">
+<!-- <div class="player-info">
   <div class="row w-75 m-auto align-items-center">
     <div
       class="col-md-4 player one"
@@ -84,5 +84,209 @@
     (click)="makeMove(rowIndex, colIndex)"
   >
     {{ squares[rowIndex][colIndex] }}
+  </div>
+</div> -->
+<div class="player-info mt-5">
+  <h1 class="text-center title">Tic Tac Toe</h1>
+</div>
+<div class="row justify-content-center">
+  <div class="col-md-4" *ngIf="!isTeam">
+    <h3 class="title">Player Details</h3>
+    <div class="row align-items-center detail-header mb-1">
+      <div class="col-md-2">S.NO</div>
+      <div class="col-md-4">Name</div>
+      <div class="col-md-4">Symbol</div>
+      <div class="col-md-2"></div>
+    </div>
+    <div
+      class="row align-items-center detail-row my-1"
+      *ngFor="let player of players"
+      [class.active]="currentPlayerIndex + 1 === player.id"
+    >
+      <div class="col-md-2">
+        {{ player.id }}
+      </div>
+      <div
+        class="col-md-4"
+        *ngIf="!currentEditingPlayer || currentEditingPlayer.id !== player.id"
+      >
+        {{ player.name }}
+      </div>
+      <div
+        class="col-md-4"
+        *ngIf="currentEditingPlayer && currentEditingPlayer.id === player.id"
+      >
+        <input
+          type="text"
+          class="form-control"
+          name="playerName"
+          [(ngModel)]="updatedPlayerName"
+        />
+      </div>
+      <div
+        class="col-md-4"
+        *ngIf="!currentEditingPlayer || currentEditingPlayer.id !== player.id"
+      >
+        {{ player.symbol | uppercase }}
+      </div>
+      <div
+        class="col-md-4"
+        *ngIf="currentEditingPlayer && currentEditingPlayer.id === player.id"
+      >
+        <input
+          type="text"
+          class="form-control"
+          name="playerSymbol"
+          [value]="currentEditingPlayer.symbol"
+          (keyup)="changeSymbol($event, false)"
+          [class.error]="symbolError"
+        />
+      </div>
+      <div
+        class="col-md-2"
+        *ngIf="!currentEditingPlayer || currentEditingPlayer.id !== player.id"
+      >
+        <i class="fas fa-pen" (click)="onEditClick(player)"></i>
+      </div>
+      <div
+        class="col-md-2"
+        *ngIf="currentEditingPlayer && currentEditingPlayer.id === player.id"
+      >
+        <i class="fas fa-check mr-1" (click)="updatePlayerDetails()"></i>
+        <i class="fas fa-times" (click)="cancelEditMode()"></i>
+      </div>
+      <div
+        class="col-12 error"
+        *ngIf="
+          symbolError &&
+          currentEditingPlayer &&
+          currentEditingPlayer.id === player.id
+        "
+      >
+        <p>{{ symbolError }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 team" *ngIf="isTeam">
+    <h3 class="title">Team Details</h3>
+    <div
+      class="row align-items-center detail-row my-2"
+      *ngFor="let team of teams; let i = index"
+      [class.active]="currentTeamIndex + 1 === team.id"
+    >
+      <div class="col-12">
+        <div class="row">
+          <div class="col-md-4">Team {{ team.id }}</div>
+          <div
+            class="col-md-4"
+            *ngIf="currentEditingTeam && currentEditingTeam.id === team.id"
+          >
+            <input
+              type="text"
+              class="form-control"
+              name="teamSymbol"
+              [value]="currentEditingTeam.symbol"
+              (keyup)="changeSymbol($event, true)"
+              [class.error]="symbolError"
+            />
+          </div>
+          <div
+            class="col-md-4"
+            *ngIf="!currentEditingTeam || currentEditingTeam.id !== team.id"
+          >
+            {{ team.symbol }}
+          </div>
+          <div class="col-md-4">
+            <div
+              class="col-md-2"
+              *ngIf="!currentEditingTeam || currentEditingTeam.id !== team.id"
+            >
+              <i class="fas fa-pen" (click)="onEditTeam(team)"></i>
+            </div>
+            <div
+              class="col-md-2"
+              *ngIf="currentEditingTeam && currentEditingTeam.id === team.id"
+            >
+              <i class="fas fa-check mr-1" (click)="updateTeamDetails()"></i>
+              <i class="fas fa-times" (click)="cancelTeamEditMode()"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-12 error"
+        *ngIf="
+          symbolError && currentEditingTeam && currentEditingTeam.id === team.id
+        "
+      >
+        <p>{{ symbolError }}</p>
+      </div>
+      <div class="col-12">
+        <div class="row align-items-center my-3">
+          <div
+            class="col-md-6"
+            *ngFor="let player of team.players; let i = index"
+          >
+            <div class="row">
+              <div class="col-md-2">
+                {{ player.id }}
+              </div>
+              <div
+                class="col-md-8"
+                *ngIf="!currentEditingTeam || currentEditingTeam.id !== team.id"
+              >
+                {{ player.name }}
+                <span
+                  class="checkmark"
+                  *ngIf="
+                    currentTeamIndex === 0
+                      ? currentTeamIndex + 1 === team.id &&
+                        currentTeamOnePlayerIndex + 1 === player.id
+                      : currentTeamIndex + 1 === team.id &&
+                        currentTeamTwoPlayerIndex + 1 === player.id
+                  "
+                  ><i class="fas fa-check-circle"></i
+                ></span>
+              </div>
+              <div
+                class="col-md-8"
+                *ngIf="currentEditingTeam && currentEditingTeam.id === team.id"
+              >
+                <input
+                  type="text"
+                  class="form-control"
+                  name="playerName"
+                  [(ngModel)]="updatedTeam.players[i].name"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div class="row w-75 m-auto" *ngIf="winner || isDraw">
+      <div class="col">
+        <p class="winner-msg">
+          {{ winner ? "Winner is " + winner : "It's a tie...!!" }}
+        </p>
+      </div>
+    </div>
+    <div class="row w-75 m-auto" *ngFor="let row of rows; let rowIndex = index">
+      <div
+        class="col square"
+        *ngFor="let col of columns; let colIndex = index"
+        (click)="makeMove(rowIndex, colIndex)"
+      >
+        {{ squares[rowIndex][colIndex].symbol }}
+      </div>
+    </div>
+    <div class="row mt-3 justify-content-center align-items-center">
+      <div class="col-3 icons">
+        <i class="fas fa-home fa-2x mr-3" (click)="goToHome()"></i>
+        <i class="fas fa-redo fa-2x" (click)="playAgain()"></i>
+      </div>
+    </div>
   </div>
 </div>
